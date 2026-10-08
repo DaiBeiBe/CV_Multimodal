@@ -152,85 +152,85 @@ if __name__ == "__main__":
     )
     x = torch.randn(2, 3, 32, 32)
     y = model(x)
-    # print(y.shape)
+    print(y.shape)
 
-    # print("patch tokens:", model.patch_embed(x).shape)
+    print("patch tokens:", model.patch_embed(x).shape)
 
-    # patch_tokens = model.patch_embed(x)
+    patch_tokens = model.patch_embed(x)
 
-    # B = patch_tokens.shape[0]
-    # cls_tokens = model.cls_token.expand(B, -1, -1)
+    B = patch_tokens.shape[0]
+    cls_tokens = model.cls_token.expand(B, -1, -1)
 
-    # tokens = torch.cat((cls_tokens, patch_tokens), dim=1)
+    tokens = torch.cat((cls_tokens, patch_tokens), dim=1)
 
-    # print("with cls:", tokens.shape)
-    # print("pos embed:", model.pos_embed.shape)
+    print("with cls:", tokens.shape)
+    print("pos embed:", model.pos_embed.shape)
 
-    # tokens = tokens + model.pos_embed
+    tokens = tokens + model.pos_embed
 
-    # print("after pos:", tokens.shape)
+    print("after pos:", tokens.shape)
 
-    # for block in model.blocks:
-    #     tokens = block(tokens)
+    for block in model.blocks:
+        tokens = block(tokens)
 
-    # print("after transformer:", tokens.shape)
+    print("after transformer:", tokens.shape)
 
-    # tokens = model.norm(tokens)
-    # print("after norm:", tokens.shape)
+    tokens = model.norm(tokens)
+    print("after norm:", tokens.shape)
 
-    # cls_out = tokens[:, 0]
-    # print("cls:", cls_out.shape)
+    cls_out = tokens[:, 0]
+    print("cls:", cls_out.shape)
 
-    # print("output:", model.head(cls_out).shape)
+    print("output:", model.head(cls_out).shape)
 
     # exp_1
-    # for patch_size in [8, 4, 2]:
-    #     model = MiniViT(
-    #         img_size=32,
-    #         patch_size=patch_size,
-    #         in_channels=3,
-    #         num_classes=10,
-    #         embed_dim=64,
-    #         depth=4,
-    #         num_heads=4,
-    #     )
+    for patch_size in [8, 4, 2]:
+        model = MiniViT(
+            img_size=32,
+            patch_size=patch_size,
+            in_channels=3,
+            num_classes=10,
+            embed_dim=64,
+            depth=4,
+            num_heads=4,
+        )
 
-    #     print(
-    #         f"patch_size={patch_size}, "
-    #         f"num_patches={model.patch_embed.num_patches}, "
-    #         f"num_tokens={model.patch_embed.num_patches + 1}"
-    #     )
+        print(
+            f"patch_size={patch_size}, "
+            f"num_patches={model.patch_embed.num_patches}, "
+            f"num_tokens={model.patch_embed.num_patches + 1}"
+        )
 
     # exp_2
-    # for patch_size in [8, 4, 2]:
+    for patch_size in [8, 4, 2]:
 
-    #     print("=" * 50)
-    #     print(f"Patch Size = {patch_size}")
+        print("=" * 50)
+        print(f"Patch Size = {patch_size}")
 
-    #     model = MiniViT(
-    #         img_size=32,
-    #         patch_size=patch_size,
-    #         in_channels=3,
-    #         num_classes=10,
-    #         embed_dim=64,
-    #         depth=1,  # 实验时先用 1 层
-    #         num_heads=4,
-    #     )
+        model = MiniViT(
+            img_size=32,
+            patch_size=patch_size,
+            in_channels=3,
+            num_classes=10,
+            embed_dim=64,
+            depth=1,  # 实验时先用 1 层
+            num_heads=4,
+        )
 
-    #     x = torch.randn(2, 3, 32, 32)
+        x = torch.randn(2, 3, 32, 32)
 
-    #     y = model(x)
+        y = model(x)
 
-    #     print("Output shape:", y.shape)
+        print("Output shape:", y.shape)
 
     # exp_3
-    # for patch_size in [8, 4, 2]:
+    for patch_size in [8, 4, 2]:
 
-    #     N = (32 // patch_size) ** 2 + 1
+        N = (32 // patch_size) ** 2 + 1
 
-    #     attention_elements = N * N
+        attention_elements = N * N
 
-    #     print(f"P={patch_size}, " f"N={N}, " f"N²={attention_elements}")
+        print(f"P={patch_size}, " f"N={N}, " f"N²={attention_elements}")
 
     # exp_4
     for patch_size in [8, 4, 2]:
